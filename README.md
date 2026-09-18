@@ -5,6 +5,28 @@
 A Codex Skill for reliable landscape architecture CAD-to-SketchUp workflows.
 Tested workflow for landscape CAD-to-SketchUp automation with explicit validation and failure handling. Every new DWG still requires pre-flight checks.
 
+## Quick Install - Windows
+
+**v1.1: Windows installation & environment-check update. No Git required.** For landscape students and designers who want to install the workflow before configuring desktop automation.
+
+1. Choose **Code -> Download ZIP** on GitHub, or [download the main ZIP](https://github.com/lunxianle666/sketchup-from-cad-landscape/archive/refs/heads/main.zip).
+2. Extract the complete ZIP and open the folder containing `install.ps1`.
+3. Open PowerShell in that folder and run:
+
+   ```powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+   ```
+4. The installer automatically runs the environment checker. Run it again after adding dependencies:
+
+   ```powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\check-environment.ps1
+   ```
+5. Follow **Missing / Action Required**, then invoke the Skill in Codex.
+
+No administrator permissions or permanent execution-policy changes are needed. **SKILL INSTALLED does not mean FULL AUTOMATION READY.** The installer copies only the Skill and its two referenced runtime documents. Different existing installs are preserved in a timestamped backup outside the Skills discovery directory.
+
+See [Quick Start](docs/QUICK_START.md), [中文小白教程](docs/QUICK_START.zh-CN.md), and [Troubleshooting](docs/TROUBLESHOOTING.md).
+
 ## What It Is
 
 An instruction-only workflow Skill that coordinates existing AutoCAD automation and a SketchUp MCP bridge. It is not a SketchUp MCP server, AutoCAD plugin, or geometry engine. Installing it does not install or configure those tools. The operational [SKILL.md](SKILL.md) is in Chinese; this English guide explains setup and use.
@@ -49,6 +71,23 @@ flowchart TD
 
 Local ambiguity does not stop unrelated, verified work. Global blockers stop further modeling; failed operations resume from a verified checkpoint.
 
+## Two dependency levels
+
+**Level 1:** Installing the Skill only needs Windows and Codex with Skills support. Missing CAD, Python or MCP tools do not block file installation.
+
+**Level 2:** Running the complete workflow needs the desktop automation dependencies below and live PRE-FLIGHT.
+
+| Component | Install Skill | Full Automation |
+| --- | --- | --- |
+| Windows + Codex Skills | Required | Required |
+| Git | Optional | Optional |
+| AutoCAD desktop / COM | No | Required |
+| Python | No | Required |
+| pywin32 | No | Required |
+| SketchUp desktop / DWG importer | No | Required |
+| Compatible SketchUp MCP bridge | No | Required |
+| AutoCAD entity-audit workflow | No | Required |
+
 ## Requirements
 
 Required or expected for this workflow:
@@ -70,26 +109,31 @@ Other AutoCAD, SketchUp, bridge, and client versions are potentially compatible 
 
 ## Installation
 
-First install and verify external tools independently. Follow [Ringo's official setup guide](https://github.com/Ringophilia/Ringo-Sketchup-MCP) for the bridge; verify authorized Ruby execution and the correct SketchUp instance.
+### Method A - Download ZIP (recommended)
 
-For current local Codex discovery, [official OpenAI documentation](https://learn.chatgpt.com/docs/build-skills) lists user skills under `~/.agents/skills` and repository skills under `.agents/skills`. Clone this repository into a named Skill folder beneath either location, or download it and copy the complete folder there. Do not overwrite an existing installed Skill.
+Use the [Quick Install](#quick-install---windows) steps. **Git is optional** and no third-party dependency is needed to copy the Skill files. Downloading/extracting the full package is required; running inside ZIP or downloading only `install.ps1` is insufficient.
 
-PowerShell, run from the downloaded or cloned repository:
+### Method B - Git clone (developers)
+
+Only if Git is already installed:
 
 ```powershell
-$skillRoot = Join-Path $env:USERPROFILE '.agents\skills'
-$destination = Join-Path $skillRoot 'sketchup-from-cad-landscape'
-if (Test-Path -LiteralPath $destination) {
-    throw 'Skill already exists. Inspect it before updating.'
-}
-New-Item -ItemType Directory -Path $destination -Force | Out-Null
-Copy-Item -LiteralPath 'SKILL.md','README.md','README.zh-CN.md','LICENSE' -Destination $destination
-Copy-Item -LiteralPath 'docs' -Destination $destination -Recurse
+git clone https://github.com/lunxianle666/sketchup-from-cad-landscape.git
+cd sketchup-from-cad-landscape
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-Alternatively, ask `$skill-installer` to install this Skill from this repository's GitHub URL, specifying that `SKILL.md` is at the repository root. Detect newly installed skills in Codex; restart if the Skill does not appear.
+The installer defaults to `~/.agents/skills/sketchup-from-cad-landscape`, the current user location in [official OpenAI documentation](https://learn.chatgpt.com/docs/build-skills). Repository-level `.agents/skills` can also be selected:
 
-The historical validated installation used `~/.codex/skills/sketchup-from-cad-landscape`. That is an environment-specific legacy location, not the current universal recommendation. The current discovery-location installation above was documentation-checked, not retested in every client. This release stays a standalone Skill rather than a plugin package.
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -SkillsDirectory .\.agents\skills
+```
+
+The installer does not change legacy `~/.codex/skills` by default. If a legacy copy already works, confirm discovery in Codex and avoid creating duplicate copies. An explicit `-SkillsDirectory` selects the exact target to install/check. Only use it for a directory you intend to update. Existing different content is moved intact to `skill-install-backups` beside the selected Skills directory, then replaced with the verified public runtime files; identical content is left alone. Linked targets are refused. Failed replacements attempt to restore the original without deleting files.
+
+`SKILL.md` references `docs/TESTED_ENVIRONMENT.md` and `docs/LIMITATIONS.md`, so those are installed runtime resources. README, quick-start guides, installer, checker, Git metadata, and unrelated docs are not installed. Keep the extracted package to rerun environment checks. `-SkipEnvironmentCheck` installs files only. Installed presence does not establish actual Codex discovery.
+
+The checker discovers executables, COM registration, a working Python and pywin32, plus possible MCP evidence. It does not start AutoCAD/SketchUp, instantiate COM, install software, or alter third-party settings. `UNKNOWN` is expected until authenticated MCP, authorized Ruby, correct instance and DWG import are checked through PRE-FLIGHT. Generic bridge compatibility is not assumed. See [status meanings and repairs](docs/TROUBLESHOOTING.md).
 
 ## Usage
 

@@ -4,6 +4,28 @@
 
 用于景观 CAD → SketchUp 的 Codex 工作流 Skill，提供预检、原图保护、几何验证与失败恢复。已有本机实测记录，但每张新 DWG 都必须重新预检。
 
+## Windows 小白快速安装
+
+**v1.1：Windows 安装与环境检测更新。没有 Git 也能安装。** 适合希望用 CAD 总平建立 SU 基础模型的风景园林学生和设计人员。
+
+1. 在 GitHub 点击 **Code → Download ZIP**，或[直接下载 ZIP](https://github.com/lunxianle666/sketchup-from-cad-landscape/archive/refs/heads/main.zip)。
+2. 完整解压，进入包含 `install.ps1` 的文件夹。
+3. 在这个文件夹打开 PowerShell，运行：
+
+   ```powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+   ```
+4. 安装后会自动检测环境；补齐依赖后可再次运行：
+
+   ```powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\check-environment.ps1
+   ```
+5. 按 **Missing / Action Required** 补齐条件，再在 Codex 中调用 Skill。
+
+无需管理员权限，也不会永久修改执行策略。**Skill 安装成功不代表完整自动化已就绪。** 安装器只复制 Skill 与它引用的两份运行参考文档；已有不同版本会先完整备份到 Skills 扫描目录之外。
+
+不会 PowerShell？请看[中文小白快速开始](docs/QUICK_START.zh-CN.md)。英文问题说明见 [Troubleshooting](docs/TROUBLESHOOTING.md)。
+
 ## 项目用途
 
 本项目是一套指令型 Skill，编排已有 AutoCAD 自动化和 SketchUp MCP 能力。它不是 AutoCAD 插件、SketchUp MCP 服务器或几何内核；安装 Skill 不会自动安装这些外部工具。完整操作规则见 [SKILL.md](SKILL.md)。
@@ -23,19 +45,50 @@ CAD 导入可能保留顶点却离散曲线，也可能丢失极短边和注释�
 
 流程图见英文 [Workflow](README.md#workflow)：DWG → PRE-FLIGHT → CAD AUDIT → 安全修复/隔离待确认 → CLEAN → 原生导入 → CAD_REFERENCE → 确定部分三维化 → 曲线检查 → 组件与标签组织 → 几何验收 → 保存 → 重开。
 
+## 两个依赖等级
+
+**Level 1：安装 Skill。** 只需 Windows 和支持 Skills 的 Codex。没有 CAD、SU、Python、MCP 或 Git 也能安装文件。
+
+**Level 2：完整 CAD → SU 自动化。** 需要下表依赖，并在实际项目上完成 PRE-FLIGHT。
+
+| 组件 | 安装 Skill | 完整自动化 |
+| --- | --- | --- |
+| Windows + Codex Skills | 必需 | 必需 |
+| Git | 可选 | 可选 |
+| AutoCAD 桌面版 / COM | 不需要 | 必需 |
+| Python | 不需要 | 必需 |
+| pywin32 | 不需要 | 必需 |
+| SketchUp 桌面版 / DWG importer | 不需要 | 必需 |
+| 兼容 SketchUp MCP 桥接 | 不需要 | 必需 |
+| AutoCAD 源实体审计 workflow | 不需要 | 必需 |
+
 ## 依赖与实测环境
 
 需要支持 Skills 的 Codex、Windows、支持 COM 的 AutoCAD 桌面版、Python + pywin32、支持原生 DWG 导入的 SketchUp 桌面版，以及能查询实例/模型并提供授权 Ruby 执行的 SketchUp MCP 桥接。还需要已有的 AutoCAD 实体审计自动化 workflow/skill。
 
 2026-09-17 本机实测使用 AutoCAD 2025、Python 3.12.10、SketchUp 2023 / 23.0.367、Ruby 2.7.2、Ringo-Sketchup-MCP 1.3.2 和 Codex CLI。环境包含本地 MCP Schema 兼容调整与进程级临时 Ruby 启用；不能把所有未修改的客户端组合称为已验证。其他版本可能兼容，但本仓库未验证。详情见 [Tested Environment](docs/TESTED_ENVIRONMENT.md)。
 
-## 安装
+## 安装方式与安装器行为
 
-先独立安装并验证外部工具，桥接安装遵循 [Ringo 官方仓库](https://github.com/Ringophilia/Ringo-Sketchup-MCP) 的说明，确认目标实例及授权 Ruby 能力。
+**方式 A：Download ZIP（推荐）。** 按前面的快速安装步骤操作，Git 不是必需条件。必须完整解压后运行，不能只下载 `install.ps1`。
 
-当前 [OpenAI 官方说明](https://learn.chatgpt.com/docs/build-skills) 列出的用户级目录为 `~/.agents/skills`，项目级目录为 `.agents/skills`。下载或 clone 本仓库后，将完整项目文件夹放入其中，并命名为 `sketchup-from-cad-landscape`；不要覆盖已有 Skill。英文 README 提供有覆盖保护的 PowerShell 复制示例。
+**方式 B：Git clone（开发者）。** 已安装 Git 时才使用：
 
-也可让 `$skill-installer` 从本仓库 GitHub 地址安装，注明 `SKILL.md` 位于仓库根目录。未出现时重启 Codex。历史本机安装使用 `~/.codex/skills`，这不是所有当前客户端通用的推荐路径。当前安装目录按官方文档核实，未在所有客户端重新实测。本次发布保持为独立 Skill，不额外制作插件包。
+```powershell
+git clone https://github.com/lunxianle666/sketchup-from-cad-landscape.git
+cd sketchup-from-cad-landscape
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+默认安装到 `~/.agents/skills/sketchup-from-cad-landscape`，这是当前 [OpenAI 官方说明](https://learn.chatgpt.com/docs/build-skills) 的用户级目录。可通过 `-SkillsDirectory .\.agents\skills` 指定项目级目录；检测脚本使用同一参数检查指定位置。
+
+安装器默认不触碰历史 `~/.codex/skills`。已有正常工作的旧目录版本时，先在 Codex 确认发现情况，避免装出重复 Skill。自定义目标意味着你明确选择更新那个位置。
+
+相同内容不重复安装；不同内容会连同自定义文件一起完整备份到 Skills 目录旁的 `skill-install-backups`，名称包含时间与唯一标识，随后安装公开运行文件并显示备份位置。链接目标会拒绝自动更新；替换失败时尝试恢复原目录，不删除原文件。
+
+只安装 `SKILL.md` 和它明确引用的 `docs/TESTED_ENVIRONMENT.md`、`docs/LIMITATIONS.md`，不会复制 README、安装器或其他无关文档。保留下载包，方便以后运行检测。可加 `-SkipEnvironmentCheck` 只安装文件；安装后的文件存在不等于 Codex 已实际发现。
+
+环境检测不启动 CAD/SU、不实例化 COM、不装软件、不修改第三方设置。它能检查软件线索、COM 注册、Python 与 pywin32，但不能代替授权 MCP、Ruby、目标实例和实际 DWG 导入的 PRE-FLIGHT。完整状态为 `UNKNOWN` 时，请继续做实际预检，不能理解为已就绪。详见[小白教程](docs/QUICK_START.zh-CN.md)与[常见问题](docs/TROUBLESHOOTING.md)。
 
 ## 使用
 
