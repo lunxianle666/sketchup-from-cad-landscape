@@ -1,6 +1,10 @@
-# Windows quick start (v1.1)
+# Windows quick start (historical standalone component)
 
 [简体中文](QUICK_START.zh-CN.md) · [Home](../README.md)
+
+This component is frozen. “v1.1” in the historical checker is an installer update
+label, not a Tag/Release. See the [status and project choice](../README.md#status-frozen-historical-standalone-component)
+before installing; new users can start with Landscape-Agent-Pack.
 
 ## 1. What this does
 

@@ -4,9 +4,19 @@
 
 用于景观 CAD → SketchUp 的 Codex 工作流 Skill，提供预检、原图保护、几何验证与失败恢复。已有本机实测记录，但每张新 DWG 都必须重新预检。
 
+## 状态：冻结的历史独立组件
+
+自 2026-10-30 起，本仓库冻结为仍可独立使用的历史指令型 Skill。后续维护集中到 [Landscape-Agent-Pack](https://github.com/lunxianle666/Landscape-Agent-Pack)，优先处理文档、兼容性与可复现缺陷。本次只添加文档冻结说明，GitHub 仓库 Archive 设置保持不变。
+
+Landscape-Agent-Pack v0.2.0 已纳入本组件固定公开基线 [`cc28ffd4b9daea890fbe78fd3737c9669d042446`](https://github.com/lunxianle666/sketchup-from-cad-landscape/commit/cc28ffd4b9daea890fbe78fd3737c9669d042446) 的 Skill、必要运行文档及 LICENSE，并按 [基线报告](https://github.com/lunxianle666/Landscape-Agent-Pack/blob/v0.2.0/docs/SKILL_BASELINE_REPORT.md) 调整 Pack 内的来源措辞；不会在运行时跟随本仓库 main 更新。
+
+新用户如需持续维护的规则/MCP、Python Core、QA 和 Bridge 入口，请从 [主项目正式版](https://github.com/lunxianle666/Landscape-Agent-Pack/releases/tag/v0.2.0) 与 [安装指南](https://github.com/lunxianle666/Landscape-Agent-Pack/blob/main/docs/INSTALL_WINDOWS.md) 开始。已有可用桌面自动化工具栈、只需历史工作流指令时，可继续选择本独立组件。避免重复安装同名 Skill；两种选择都不能省去插件依赖与 PRE-FLIGHT。
+
+**版本说明：**截至 2026-10-30，本仓库没有远程 Tag 或 GitHub Release。旧教程与检测脚本横幅中的“v1.1”是上述基线提交的 Windows 安装/环境检测更新标识，不代表已打 Tag 或正式发行的 v1.1。本次冻结不补发 Release。引用精确快照请使用提交号；main ZIP 会包含后续文档。
+
 ## Windows 小白快速安装
 
-**v1.1：Windows 安装与环境检测更新。没有 Git 也能安装。** 适合希望用 CAD 总平建立 SU 基础模型的风景园林学生和设计人员。
+**历史 Windows 安装/环境检测（“v1.1”为更新标识，并非发行版本）。没有 Git 也能安装。** 以下步骤保留给选择上述独立 Skill 的用户。
 
 1. 在 GitHub 点击 **Code → Download ZIP**，或[直接下载 ZIP](https://github.com/lunxianle666/sketchup-from-cad-landscape/archive/refs/heads/main.zip)。
 2. 完整解压，进入包含 `install.ps1` 的文件夹。
@@ -124,7 +134,7 @@ XY 来自实际 CAD 实体。高度按 CAD 标高、剖立面、设计说明、�
 
 匿名化 **30 项合成景观 CAD 压力测试**形成 22 个区域 Group、19 个 MODEL 植物/小品组件实例。最大线性定位误差约 `4.66e-10 mm`，原生曲线抽样偏差约 `8.458 mm`，按源 CAD 参数细化 MODEL 后约 `0.199 mm`，最大面积误差约 `0.0351%`，保存重开通过。
 
-历史综合状态仍为 **PARTIAL**，包含极短边/注释导入丢失、模型重叠及待确认事项。本次整理未重跑这些测试，也未发布私人原始报告或测试图纸。精确数值和方法见 [匿名验证摘要](docs/TESTED_ENVIRONMENT.md)；仓库不附原测试夹具，不能据此直接复现全部历史测试。
+历史综合状态仍为 **PARTIAL**，包含极短边/注释导入丢失、模型重叠及待确认事项。打包及本次冻结均未重跑这些测试，也未公开私人原始报告、CAD 夹具及对应截图/演示。精确数值和方法见 [匿名验证摘要](docs/TESTED_ENVIRONMENT.md)；不能从本仓库直接复现全部历史测试。主项目后续验收不会升级本组件的历史结论。
 
 原生导入会离散曲线，极短边可能丢失，部分注释无法保留；复杂 Spline 需要源参数与采样/重建，设计歧义需要人工确认。AutoCAD COM 面向 Windows。镜像/非均匀/动态/复杂嵌套块、任意曲线自交、全面面重叠检测、密集图案 Hatch 和其他软件版本未证明可靠。完整说明见 [Limitations](docs/LIMITATIONS.md)。
 

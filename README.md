@@ -2,12 +2,40 @@
 
 [简体中文](README.zh-CN.md)
 
-A Codex Skill for reliable landscape architecture CAD-to-SketchUp workflows.
-Tested workflow for landscape CAD-to-SketchUp automation with explicit validation and failure handling. Every new DWG still requires pre-flight checks.
+A historical Codex Skill for landscape architecture CAD-to-SketchUp workflows.
+Workflow instructions for landscape CAD-to-SketchUp automation with explicit validation and failure handling. Historical local validation remains limited; every new DWG still requires pre-flight checks.
+
+## Status: frozen historical standalone component
+
+As of 2026-10-30, this repository is frozen as a historical, independently usable
+instruction-only Skill. Ongoing work is centered on
+[Landscape-Agent-Pack](https://github.com/lunxianle666/Landscape-Agent-Pack), with
+documentation, compatibility and reproducible defects prioritized there. This is
+a documentation freeze notice; the GitHub repository Archive setting is unchanged.
+
+Landscape-Agent-Pack v0.2.0 incorporates the fixed public baseline
+[`cc28ffd4b9daea890fbe78fd3737c9669d042446`](https://github.com/lunxianle666/sketchup-from-cad-landscape/commit/cc28ffd4b9daea890fbe78fd3737c9669d042446)
+of this Skill, its required runtime documents and LICENSE, with the Pack-specific
+provenance wording described in its
+[baseline report](https://github.com/lunxianle666/Landscape-Agent-Pack/blob/v0.2.0/docs/SKILL_BASELINE_REPORT.md).
+It does not track this repository's main branch at runtime.
+
+New users seeking the maintained rule/MCP, Python Core, QA and Bridge entry point
+should start with the [Pack's current release](https://github.com/lunxianle666/Landscape-Agent-Pack/releases/tag/v0.2.0)
+and [installation guide](https://github.com/lunxianle666/Landscape-Agent-Pack/blob/main/docs/INSTALL_WINDOWS.md).
+Use this standalone component when an existing, working desktop automation stack
+only needs the historical workflow instructions. Avoid duplicate installs of the
+same Skill name. Neither choice removes plugin prerequisites or PRE-FLIGHT.
+
+**Version clarification:** the remote repository has no Tags or GitHub Releases
+as of 2026-10-30. The “v1.1” label in older guides and the checker banner describes
+the Windows installer/environment-check update at the baseline commit above;
+it is not a tagged or formally published v1.1 release. No release is added by
+this freeze. Cite a commit for an exact snapshot; main ZIP includes later docs.
 
 ## Quick Install - Windows
 
-**v1.1: Windows installation & environment-check update. No Git required.** For landscape students and designers who want to install the workflow before configuring desktop automation.
+**Historical Windows installer/environment checker (“v1.1” update label, not a release). No Git required.** This remains available for users choosing the standalone Skill described above.
 
 1. Choose **Code -> Download ZIP** on GitHub, or [download the main ZIP](https://github.com/lunxianle666/sketchup-from-cad-landscape/archive/refs/heads/main.zip).
 2. Extract the complete ZIP and open the folder containing `install.ps1`.
@@ -179,12 +207,12 @@ The native importer can discretize curves, drop very short edges, and omit annot
 
 An anonymized **30-case synthetic landscape CAD stress test** produced 22 region Groups and 19 MODEL component instances. Maximum linear positioning error was approximately `4.66e-10 mm`; native sampled curve deviation was `8.458 mm`, reduced in MODEL to `0.199 mm` using original CAD parameters. Maximum measured area error was `0.0351%`; save/reopen passed.
 
-The historical overall result was **PARTIAL**, with importer losses and model overlap/review issues disclosed. These observations are not guarantees and were not rerun as part of packaging this release. Exact values, methods, scope, and environment caveats are in [the anonymized validation summary](docs/TESTED_ENVIRONMENT.md). Private source reports and CAD files are intentionally not published.
+The historical overall result was **PARTIAL**, with importer losses and model overlap/review issues disclosed. These observations are not guarantees and were not rerun for packaging or this freeze. Exact values, methods, scope, and environment caveats are in [the anonymized validation summary](docs/TESTED_ENVIRONMENT.md). Private source reports, CAD fixtures and corresponding screenshots/demos are not published here; the full historical test cannot be reproduced from this repository alone. The Pack's later acceptance does not upgrade this component's historical result.
 
 ## Dependencies & Credits
 
 - [Ringo-Sketchup-MCP](https://github.com/Ringophilia/Ringo-Sketchup-MCP), maintained by Ringophilia, is an external third-party control bridge. Follow its own license and installation instructions. No Ringo code is vendored and no official affiliation or collaboration is implied.
-- AutoCAD automation is supplied by the user's existing workflow/skill. The local `autocad-dwg-redraw` source/license was not established from its metadata; this release neither distributes it nor claims authorship.
+- AutoCAD automation is supplied by the user's existing workflow/skill. The local `autocad-dwg-redraw` source/license was not established from its metadata; this repository neither distributes it nor claims authorship.
 - AutoCAD, SketchUp, Python/pywin32, SketchUp Ruby API, and OpenAI Codex are independent dependencies with their own licenses and terms. [SketchUp importer options](https://ruby.sketchup.com/file.importer_options.html) document the native import API.
 
 ## License

@@ -1,6 +1,8 @@
-# Windows 小白快速开始（v1.1）
+# Windows 小白快速开始（历史独立组件）
 
 [English](QUICK_START.md) · [返回首页](../README.zh-CN.md)
+
+本组件已冻结；历史检测脚本中的“v1.1”是安装更新标识，不是 Tag/Release。安装前请阅读 [状态与项目选择](../README.zh-CN.md#状态冻结的历史独立组件)，新用户可从 Landscape-Agent-Pack 开始。
 
 ## 1. 这个项目能干什么
 
